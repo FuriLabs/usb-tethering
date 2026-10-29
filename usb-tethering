@@ -143,8 +143,17 @@ ip_setup() {
 
 dhcpd_start() {
     mkdir -p /run/usb-tethering
-    touch /run/usb-tethering/dhcpd4.lease
-    dhcpd -f -4 -q -cf /usr/share/usb-tethering/dhcpd.conf -pf /run/usb-tethering/dhcpd4.pid -lf /run/usb-tethering/dhcpd4.lease
+
+    exec dnsmasq \
+        --keep-in-foreground \
+        --port=0 \
+        --interface="$USB_IFACE" \
+        --bind-interfaces \
+        --dhcp-range=10.15.19.100,10.15.19.254,255.255.255.0,12h \
+        --dhcp-option=option:router,"$LOCAL_IP" \
+        --dhcp-option=option:dns-server,8.8.8.8,8.8.4.4 \
+        --dhcp-leasefile=/run/usb-tethering/dnsmasq.leases \
+        --pid-file=/run/usb-tethering/dnsmasq.pid
 }
 
 nm_connection_setup() {
@@ -163,5 +172,3 @@ usb_setup
 ip_setup
 nm_connection_setup
 dhcpd_start
-
-exit $?
