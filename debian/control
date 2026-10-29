@@ -11,9 +11,8 @@ Package: usb-tethering
 Architecture: all
 Breaks: hybris-usb
 Replaces: hybris-usb
-Depends: isc-dhcp-server,
+Depends: dnsmasq,
          net-tools,
-         ethtool,
          ${shlibs:Depends},
          ${misc:Depends}
 Description: Early debugging USB configuration script 
