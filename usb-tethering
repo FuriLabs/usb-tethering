@@ -105,10 +105,10 @@ usb_setup_android_usb() {
 usb_setup() {
     mount -t configfs none /sys/kernel/config || true
 
-    if [ -d $ANDROID_USB ]; then
-        usb_setup_android_usb $1
-    elif [ -d $GADGET_DIR ]; then
-        usb_setup_configfs $1
+    if [ -d "$GADGET_DIR" ]; then
+        usb_setup_configfs "$1"
+    elif [ -d "$ANDROID_USB" ]; then
+        usb_setup_android_usb "$1"
     fi
 }
 
